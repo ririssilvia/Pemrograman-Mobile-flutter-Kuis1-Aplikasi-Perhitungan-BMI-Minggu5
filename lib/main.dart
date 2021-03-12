@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'Widgets/inputBerat.dart';
+import 'Widgets/inputJk.dart';
+import 'Widgets/inputTinggi.dart';
+import 'Widgets/inputUmur.dart';
 
 void main() {
   runApp(MyApp());
@@ -90,47 +94,10 @@ class _MyAppState extends State<MyApp> {
                   child: Column(//membuat widget chlid column
                       mainAxisAlignment: MainAxisAlignment.center,//membuat column agar di tengah
                       children: [
-                        TextField(//widged texfielde untuk sebuah inputan dari user berupa text
-                          decoration: InputDecoration(//mengatur tambpilan dibagian input
-                              labelText: "Jenis Kelamain",//untuk memberi label pada textfield
-                              hintText: "Masukkan Jenis Kelamin Anda",//hint teks digunakan untuk memberi petunjuk pada textFormFieldnya
-                              icon: Icon(Icons.person_search_rounded),//memberikan icon pada inputdecoration
-                              ),
-                          controller: _jkController,//controller digunakan untuk menyimpan inputan jenis kelamin 
-                        ),
-                        TextField( //widged texfielde untuk sebuah inputan dari user berupa text
-                          decoration: InputDecoration(//mengatur tambpilan dibagian input
-                              labelText: "Umur",//untuk memberi label pada textfield
-                              hintText: "Masukkan Umur Anda",//hint teks digunakan untuk memberi petunjuk pada textFormFieldnya
-                              icon: Icon(Icons.person),//memberikan icon pada inputdecoration
-                              ),
-                          inputFormatters: [//inputan khusus format digital onlny yaitu 0-9
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          controller: _umurController,//controller digunakan untuk menyimpan inputan umur
-                          keyboardType: TextInputType.number,//dengan type inputan keyboard nomor
-                        ),
-                        TextField(//widged texfielde untuk sebuah inputan dari user berupa text
-                          decoration: InputDecoration(//mengatur tambpilan dibagian input
-                              hintText: "Masukkan Tinggi Anda (m)",//hint teks digunakan untuk memberi petunjuk pada textFormFieldnya
-                              labelText: "Tinggi",//untuk memberi label pada textfield
-                              icon: new Icon(Icons.assessment), //memberikan icon 
-                              ),
-                          controller: _tinggiController,//controller digunakan untuk menyimpan inputan tinggi
-                          keyboardType: TextInputType.number,//dengan type inputan keyboard nomor
-                        ),
-                        TextField(//widged texfielde untuk sebuah inputan dari user berupa text
-                          decoration: InputDecoration(//mengatur tambpilan dibagian input
-                              hintText: "Masukkan Berat Badan Anda (Kg)",//hint teks digunakan untuk memberi petunjuk pada textFormFieldnya
-                              labelText: "Berat Badan",//untuk memberi label pada textfield
-                              icon: Icon(Icons.storage),//untuk memberi icon
-                              ),
-                          inputFormatters: [//inputan khusus format digital onlny yaitu 0-9
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          controller: _beratController,//controller digunakan untuk menyimpan inputan berat
-                          keyboardType: TextInputType.number,//dengan type inputan keyboard nomor
-                        ),
+                        inputJk(jkController: _jkController),
+                        inputUmur(umurController: _umurController),
+                        inputTinggi(tinggiController: _tinggiController),
+                        inputBerat(beratController: _beratController),
                         Container(//widgwd container untuk mengatur button
                           margin:  EdgeInsets.only(top: 20.0),//mengatur margin hanya bagaian atas
                           // ignore: deprecated_member_use
@@ -167,5 +134,13 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+
+
+
+
+
+
+
 
  
