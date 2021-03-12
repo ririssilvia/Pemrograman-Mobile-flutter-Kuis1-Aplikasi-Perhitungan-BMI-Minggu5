@@ -1,7 +1,5 @@
-import 'dart:ffi';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,27 +8,66 @@ void main() {
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   //controller
+  final TextEditingController _jkController = new TextEditingController();
   final TextEditingController _umurController = new TextEditingController();
   final TextEditingController _tinggiController = new TextEditingController();
   final TextEditingController _beratController = new TextEditingController();
 
-//variabel berubah
+  //variabel berubah
   double _tinggi = 0.0;
   double _berat = 0.0;
-  double _rumusbmi = 0.0;
+  double _rumushasilBMI = 0.0;
   int _finalBMI = 0;
   String _result;
 
-//Fungsi perhitungan suhu perlu untuk diubah sehingga hanya memproses konversi sesuai
-  Void _perhitunganBMI(){
+  //Fungsi perhitungan suhu perlu untuk diubah sehingga hanya memproses konversi sesuai
+  //dengan pilihan pengguna.
+  void _perhitunganBmi() {
+     _berat = double.parse(_beratController.text);
+      _tinggi = double.parse(_tinggiController.text);
+     
+    setState(() {
+       _rumushasilBMI = _berat / (_tinggi * _tinggi);
+      _finalBMI = _rumushasilBMI.round();
+     
 
+      if (_finalBMI <= 18) {
+        _result = "Anda kekurangan berat badan";
+      } else if (_finalBMI > 18 && _finalBMI <= 25) {
+        _result = "Anda sempurna";
+      } else if (_finalBMI > 25 && _finalBMI <= 30) {
+        _result = "Anda kelebihan berat badan";
+      } else if (_finalBMI > 30) {
+        _result = "Anda obesitas";
+      }
+    });
   }
-}
+  // void _tampilkanalert() {
+  //   AlertDialog alertDialog = new AlertDialog(
+  //     content: new Container(
+  //       height: 200.0,
+  //       child:  Center(
+  //         child:  Text(
+  //           " Hasil BMI Anda  is $_finalBMI : $_result"),
+  //       ),
+  //     ),
+  //     actions: [
+  //       // ignore: deprecated_member_use
+  //       FlatButton(
+  //         child: Text('Tutup'),
+  //         onPressed: () {
+  //           Navigator.of(context).pop();
+  //         },
+  //       ),
+  //     ],
+  //   );
+  //   //showDialog(context: context, child: alertDialog, barrierDismissible: false,);
+  // }
 
-
-
-class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -51,27 +88,27 @@ class _MyAppState extends State<MyApp> {
           //alignment: Alignment.topCenter,
           child: ListView(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
-                    child: CupertinoButton(
-                      child: Text("Laki-Laki",
-                          style: TextStyle(color: Colors.black)),
-                      onPressed: () {},
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(10, 10, 20, 0),
-                    child: CupertinoButton(
-                      child: Text("Perempuan",
-                          style: TextStyle(color: Colors.black)),
-                      onPressed: () {},
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //   children: [
+              //     Container(
+              //       margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
+              //       child: CupertinoButton(
+              //         child: Text("Laki-Laki",
+              //             style: TextStyle(color: Colors.black)),
+              //         onPressed: () {},
+              //       ),
+              //     ),
+              //     Container(
+              //       margin: EdgeInsets.fromLTRB(10, 10, 20, 0),
+              //       child: CupertinoButton(
+              //         child: Text("Perempuan",
+              //             style: TextStyle(color: Colors.black)),
+              //         onPressed: () {},
+              //       ),
+              //     ),
+              //   ],
+              // ),
               Container(
                 child: Padding(
                   padding: EdgeInsets.only(top: 10.0),
@@ -85,7 +122,7 @@ class _MyAppState extends State<MyApp> {
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.blue, width: 5.0),
                 ),
-                height: 300.0,
+                height: 400.0,
                 width: 100.0,
                 margin: EdgeInsets.all(10.10),
                 child: Padding(
@@ -95,24 +132,29 @@ class _MyAppState extends State<MyApp> {
                       children: [
                         TextField(
                           decoration: InputDecoration(
+                              labelText: "Jenis Kelamain",
+                              hintText: "Masukkan Jenis Kelamin Anda",
+                              icon: Icon(Icons.person_search_rounded)),
+                          controller: _jkController,
+                        ),
+                        TextField(
+                          decoration: InputDecoration(
                               labelText: "Umur",
                               hintText: "Masukkan Umur Anda",
                               icon: Icon(Icons.person)),
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly
                           ],
-                          //controller: etInput,
+                          controller: _umurController,
                           keyboardType: TextInputType.number,
                         ),
                         TextField(
                           decoration: InputDecoration(
-                              hintText: "Masukkan Tinggi Anda (cm)",
+                              hintText: "Masukkan Tinggi Anda (m)",
                               labelText: "Tinggi",
                               icon: new Icon(Icons.assessment)),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          //controller: etInput,
+                         
+                          controller: _tinggiController,
                           keyboardType: TextInputType.number,
                         ),
                         TextField(
@@ -123,20 +165,50 @@ class _MyAppState extends State<MyApp> {
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly
                           ],
-                          //controller: etInput,
+                          controller: _beratController,
                           keyboardType: TextInputType.number,
                         ),
+                        // Container(
+                        //   padding: EdgeInsets.all(10.0),
+                        //   child: Center(
+                        //     child: RaisedButton(
+                        //       child: Text(
+                        //         "Kalkulasi",
+                        //         style: TextStyle(color: Colors.white),
+                        //       ),
+                        //       color: Colors.blue,
+                        //       onPressed: () {
+                        //        _tampilkanalert();
+                        //       },
+                        //     ),
+                        //   ),
+                        // ),
                         Container(
                           margin: const EdgeInsets.only(top: 20.0),
+                          // ignore: deprecated_member_use
                           child: RaisedButton(
-                            elevation: 5.0,
-                            color: Colors.red,
-                            child: Text("Hasil"),
-                            onPressed: () {
-                              showAlertDialog(context);
-                            },
+                          onPressed: _perhitunganBmi,
+                          color: Colors.teal,
+                          child: Text(
+                            "Calculate",
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 16.9),
                           ),
+                             ),
                         ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 5.0),
+                          child: Center(
+                            child: Text
+                            ("BMI Anda Adalah $_finalBMI : $_result",
+                            style: TextStyle(
+                              color: Colors.blueAccent,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w500
+                            ),
+                            ),
+                            ),
+                          )
                       ]),
                 ),
               ),
@@ -148,25 +220,4 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-showAlertDialog(BuildContext context) {
-// set up the button
-  Widget okButton = FlatButton(
-    child: Text("OK"),
-    onPressed: () {},
-  );
-// set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    title: Text("My title"),
-    content: Text("This is my message."),
-    actions: [
-      okButton,
-    ],
-  );
-// show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}
+ 
